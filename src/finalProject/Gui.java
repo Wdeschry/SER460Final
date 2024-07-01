@@ -1,3 +1,5 @@
+package finalProject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +11,13 @@ import java.awt.event.ActionEvent;
 
 public class Gui {
     public static void main(String[] args) {
+    	/*****************************************************************
+    	 * Placeholder for creating the pub/sub system when it is finished
+    	 ****************************************************************/
+    	Subscriber subscriber = new Subscriber();
+    	Publisher publisher = new Publisher();
+    	Broker broker = new Broker();
+    	
         /****************
          * Main window
          ****************/
