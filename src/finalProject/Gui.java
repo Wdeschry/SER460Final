@@ -3,6 +3,7 @@ package finalProject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.LinkedList;
 
 /*
  *  Main GUI class
@@ -18,7 +19,16 @@ public class Gui {
     	 ****************************************************************/
     	Broker broker = new Broker();
         Subscriber subscriber = new Subscriber(broker, "Default Subscriber");
-        Publisher publisher = new Publisher(broker, "Default Publisher");
+        
+        //Create a set of example publishers
+        LinkedList<Publisher> publishers = new LinkedList<>();
+        Publisher publisher1 = new Publisher(broker, "Publisher1");
+        Publisher publisher2 = new Publisher(broker, "Publisher2");
+        Publisher publisher3 = new Publisher(broker, "Publisher3");
+        publishers.add(publisher1);
+        publishers.add(publisher2);
+        publishers.add(publisher3);
+        
     	
         /****************
          * Main window
@@ -42,20 +52,27 @@ public class Gui {
          * Top Left Section (publishers)
          ********************************/
         // Declare the elements
-        JPanel topLeft = new JPanel(new GridLayout(6,2));
+        JPanel topLeft = new JPanel(new GridLayout(8,2));
         JTextField pubUsernameField = new JTextField("", 10);
         JTextField pubCuisineField = new JTextField("", 10);
         JTextField pubMealField = new JTextField("", 10);
         JTextField pubTimeField = new JTextField("", 10);
         JTextField pubDayField = new JTextField("", 10);
+        String[] planOptions = {"Idea", "Daily", "Weekly"};
+        JComboBox<String> planDropdown = new JComboBox<>(planOptions);
+        String[] typeOptions = {"Breakfast", "Lunch", "Dinner"};
+        JComboBox<String> typeDropdown = new JComboBox<>(typeOptions);
         JButton pubButton = new JButton("Publish");
         // Pass the parameters to the button when clicked
-        pubButton.addActionListener(e -> pubButtonAction(e, 
+        pubButton.addActionListener(e -> pubButtonAction(e,
+        		publishers,
         		pubUsernameField.getText(),
         		pubCuisineField.getText(),
         		pubMealField.getText(),
         		pubTimeField.getText(),
         		pubDayField.getText(),
+        		planDropdown.getSelectedItem().toString(),
+        		typeDropdown.getSelectedItem().toString(),
         		bottomTextArea));
         
         // Add the elements in order to the panel
@@ -65,10 +82,14 @@ public class Gui {
         topLeft.add(pubCuisineField);
         topLeft.add(new JLabel("Meal Name:"));
         topLeft.add(pubMealField);
-        topLeft.add(new JLabel("Time of Meal:"));
+        topLeft.add(new JLabel("Cook Time:"));
         topLeft.add(pubTimeField);
         topLeft.add(new JLabel("Day of Meal:"));
         topLeft.add(pubDayField);
+        topLeft.add(new JLabel("Meal Plan:"));
+        topLeft.add(planDropdown);
+        topLeft.add(new JLabel("Meal Type:"));
+        topLeft.add(typeDropdown);
         topLeft.add(pubButton);
 
         /***********************************
@@ -127,14 +148,16 @@ public class Gui {
      * Right now it just sends the strings to the bottomTextArea
      * with formatting.
      */
-    private static void pubButtonAction(ActionEvent e, String username, String cuisine, String meal, String time, String day, JTextArea bottomTextArea) {
-    	bottomTextArea.append("+++ Publish Event +++" + "\n");
-        bottomTextArea.append("Username: " + username + "\n");
-        bottomTextArea.append("Cuisine: " + cuisine + "\n");
-        bottomTextArea.append("Meal Name: " + meal + "\n");
-        bottomTextArea.append("Time of Meal: " + time + "\n");
-        bottomTextArea.append("Day of Meal: " + day + "\n");
-        bottomTextArea.append("\n");
+    private static void pubButtonAction(ActionEvent e, LinkedList<Publisher> publishers, String username, String cuisine, String mealName, String time, String day, String plan, String type, JTextArea bottomTextArea) {
+    	Publisher pub = null;
+    	for (Publisher i : publishers) {
+    		if (username.equalsIgnoreCase(i.getName())) {
+    			pub = i;
+    			pub.newMeal(username, cuisine, mealName, time, day, plan, type);
+    			return;
+    		}
+    	}
+    	Gui.print("Unregistered Publisher");
     }
     
     /*
