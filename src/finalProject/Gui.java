@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
  */
 
 public class Gui {
-    public static void main(String[] args) {
+	static final JTextArea bottomTextArea = new JTextArea();
+    
+	public static void main(String[] args) {
     	/*****************************************************************
     	 * Placeholder for creating the pub/sub system when it is finished
     	 ****************************************************************/
@@ -31,7 +33,7 @@ public class Gui {
         frame.setLayout(new GridLayout(2, 1));
 
         // Bottom half
-        JTextArea bottomTextArea = new JTextArea();
+        //JTextArea bottomTextArea = new JTextArea();
         bottomTextArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(bottomTextArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -88,6 +90,15 @@ public class Gui {
         		radioButton2,
         		bottomTextArea));
         
+        JButton unsubButton = new JButton("Unsubscribe");
+        // Pass the parameters to the button when clicked
+        unsubButton.addActionListener(e -> unsubButtonAction(e,
+        		subUsernameField.getText(),
+        		subCuisineField.getText(),
+        		radioButton1,
+        		radioButton2,
+        		bottomTextArea));
+        
         // Add the elements in order to the panel
         topRight.add(new JLabel("Username:"));
         topRight.add(subUsernameField);
@@ -99,6 +110,7 @@ public class Gui {
         topRight.add(radioButton2);
         radioButton1.setSelected(true);
         topRight.add(subButton);
+        topRight.add(unsubButton);
 
         /*************************************
          * Add finished panels to the window
@@ -138,5 +150,24 @@ public class Gui {
         bottomTextArea.append("Cuisine: " + cuisine + "\n");
         bottomTextArea.append("Subscription type: " + subscription + "\n");
         bottomTextArea.append("\n");
+    }
+    
+    /*
+     * Placeholder unsubscribe button action
+     * Right now it converts the radio button selection to a string
+     * then sends all the strings to the bottonTextArea
+     * with formatting.
+     */
+    private static void unsubButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+        String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
+        bottomTextArea.append("+++ Unsubscribe Event +++" + "\n");
+        bottomTextArea.append("Username: " + username + "\n");
+        bottomTextArea.append("Cuisine: " + cuisine + "\n");
+        bottomTextArea.append("Subscription type: " + subscription + "\n");
+        bottomTextArea.append("\n");
+    }
+    
+    static public void print(String text) {
+    	Gui.bottomTextArea.append(text + "\n");
     }
 }
