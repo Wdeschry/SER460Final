@@ -14,9 +14,9 @@ public class Gui {
     	/*****************************************************************
     	 * Placeholder for creating the pub/sub system when it is finished
     	 ****************************************************************/
-    	Subscriber subscriber = new Subscriber();
-    	Publisher publisher = new Publisher();
     	Broker broker = new Broker();
+        Subscriber subscriber = new Subscriber(broker, "Default Subscriber");
+        Publisher publisher = new Publisher(broker, "Default Publisher");
     	
         /****************
          * Main window
