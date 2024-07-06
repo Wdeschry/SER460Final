@@ -12,6 +12,13 @@ public class Broker {
     Broker() {
         meals = new LinkedList<>();
         subscribers = new LinkedList<>();
+        Subscriber Bill = new Subscriber(this, "bill");
+        Bill.subscribe("Italian");
+        Bill.subscribe("Mexican");
+        Subscriber Tim = new Subscriber(this, "tim");
+        Tim.subscribe("Daily");
+        subscribers.add(Bill);
+        subscribers.add(Tim);
     }
 
     // adds the published meal to the list and calls method to notify subscribers
@@ -54,5 +61,13 @@ public class Broker {
                 subscriber.addNotification(notification);
             }
         }
+    }
+
+    public LinkedList<Subscriber> getSubscribers(){
+        return this.subscribers;
+    }
+
+    public void addSubscriber(Subscriber sub){
+        this.subscribers.add(sub);
     }
 }

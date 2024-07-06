@@ -23,12 +23,17 @@ public class Subscriber {
     public void subscribe(String subscribeType) {
         subscribeType = subscribeType.trim();
 
-        System.out.println("subscribe, " + name + subscribeType);
+        System.out.println("subscribe, " + name + " " +  subscribeType);
 
         if(subscriptions.contains(subscribeType)) {
-            System.out.println("Error: Subscriber " + name + " is already subscribed to " + subscribeType);
+            Gui.print("Error: Subscriber " + name + " is already subscribed to " + subscribeType);
         } else {
             subscriptions.add(subscribeType);
+            Gui.print("+++ Subscribe Event +++");
+            Gui.print("Username: " + this.name);
+            //Gui.print("Cuisine: " + cuisine + "\n");
+            Gui.print("Subscription type: " + subscribeType);
+            Gui.print("\n");
         }
 
         broker.subscribe(this);

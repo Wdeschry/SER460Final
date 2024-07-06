@@ -3,6 +3,7 @@ package finalProject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.LinkedList;
 
 /*
  *  Main GUI class
@@ -10,20 +11,29 @@ import java.awt.event.ActionEvent;
  */
 
 public class Gui {
-	static final JTextArea bottomTextArea = new JTextArea();
-    
-	public static void main(String[] args) {
-    	/*****************************************************************
-    	 * Placeholder for creating the pub/sub system when it is finished
-    	 ****************************************************************/
-    	Broker broker = new Broker();
+    static final JTextArea bottomTextArea = new JTextArea();
+    static Broker broker = new Broker();
+    public static void main(String[] args) {
+        /*****************************************************************
+         * Placeholder for creating the pub/sub system when it is finished
+         ****************************************************************/
+
         Subscriber subscriber = new Subscriber(broker, "Default Subscriber");
-        Publisher publisher = new Publisher(broker, "Default Publisher");
-    	
+
+        //Create a set of example publishers
+        LinkedList<Publisher> publishers = new LinkedList<>();
+        Publisher publisher1 = new Publisher(broker, "Publisher1");
+        Publisher publisher2 = new Publisher(broker, "Publisher2");
+        Publisher publisher3 = new Publisher(broker, "Publisher3");
+        publishers.add(publisher1);
+        publishers.add(publisher2);
+        publishers.add(publisher3);
+
+
         /****************
          * Main window
          ****************/
-    	// Window
+        // Window
         JFrame frame = new JFrame("SER450 Final");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 400);
@@ -42,22 +52,29 @@ public class Gui {
          * Top Left Section (publishers)
          ********************************/
         // Declare the elements
-        JPanel topLeft = new JPanel(new GridLayout(6,2));
+        JPanel topLeft = new JPanel(new GridLayout(8,2));
         JTextField pubUsernameField = new JTextField("", 10);
         JTextField pubCuisineField = new JTextField("", 10);
         JTextField pubMealField = new JTextField("", 10);
         JTextField pubTimeField = new JTextField("", 10);
         JTextField pubDayField = new JTextField("", 10);
+        String[] planOptions = {"Idea", "Daily", "Weekly"};
+        JComboBox<String> planDropdown = new JComboBox<>(planOptions);
+        String[] typeOptions = {"Breakfast", "Lunch", "Dinner"};
+        JComboBox<String> typeDropdown = new JComboBox<>(typeOptions);
         JButton pubButton = new JButton("Publish");
         // Pass the parameters to the button when clicked
-        pubButton.addActionListener(e -> pubButtonAction(e, 
-        		pubUsernameField.getText(),
-        		pubCuisineField.getText(),
-        		pubMealField.getText(),
-        		pubTimeField.getText(),
-        		pubDayField.getText(),
-        		bottomTextArea));
-        
+        pubButton.addActionListener(e -> pubButtonAction(e,
+                publishers,
+                pubUsernameField.getText(),
+                pubCuisineField.getText(),
+                pubMealField.getText(),
+                pubTimeField.getText(),
+                pubDayField.getText(),
+                planDropdown.getSelectedItem().toString(),
+                typeDropdown.getSelectedItem().toString(),
+                bottomTextArea));
+
         // Add the elements in order to the panel
         topLeft.add(new JLabel("Username:"));
         topLeft.add(pubUsernameField);
@@ -65,15 +82,19 @@ public class Gui {
         topLeft.add(pubCuisineField);
         topLeft.add(new JLabel("Meal Name:"));
         topLeft.add(pubMealField);
-        topLeft.add(new JLabel("Time of Meal:"));
+        topLeft.add(new JLabel("Cook Time:"));
         topLeft.add(pubTimeField);
         topLeft.add(new JLabel("Day of Meal:"));
         topLeft.add(pubDayField);
+        topLeft.add(new JLabel("Meal Plan:"));
+        topLeft.add(planDropdown);
+        topLeft.add(new JLabel("Meal Type:"));
+        topLeft.add(typeDropdown);
         topLeft.add(pubButton);
 
         /***********************************
-        * Top Right Section (subscribers)
-        ***********************************/
+         * Top Right Section (subscribers)
+         ***********************************/
         //Declare the elements
         JPanel topRight = new JPanel(new GridLayout(4,2));
         JTextField subUsernameField = new JTextField("", 10);
@@ -84,21 +105,21 @@ public class Gui {
         JButton subButton = new JButton("Subscribe");
         // Pass the parameters to the button when clicked
         subButton.addActionListener(e -> subButtonAction(e,
-        		subUsernameField.getText(),
-        		subCuisineField.getText(),
-        		radioButton1,
-        		radioButton2,
-        		bottomTextArea));
-        
+                subUsernameField.getText(),
+                subCuisineField.getText(),
+                radioButton1,
+                radioButton2,
+                bottomTextArea));
+
         JButton unsubButton = new JButton("Unsubscribe");
         // Pass the parameters to the button when clicked
         unsubButton.addActionListener(e -> unsubButtonAction(e,
-        		subUsernameField.getText(),
-        		subCuisineField.getText(),
-        		radioButton1,
-        		radioButton2,
-        		bottomTextArea));
-        
+                subUsernameField.getText(),
+                subCuisineField.getText(),
+                radioButton1,
+                radioButton2,
+                bottomTextArea));
+
         // Add the elements in order to the panel
         topRight.add(new JLabel("Username:"));
         topRight.add(subUsernameField);
@@ -127,16 +148,18 @@ public class Gui {
      * Right now it just sends the strings to the bottomTextArea
      * with formatting.
      */
-    private static void pubButtonAction(ActionEvent e, String username, String cuisine, String meal, String time, String day, JTextArea bottomTextArea) {
-    	bottomTextArea.append("+++ Publish Event +++" + "\n");
-        bottomTextArea.append("Username: " + username + "\n");
-        bottomTextArea.append("Cuisine: " + cuisine + "\n");
-        bottomTextArea.append("Meal Name: " + meal + "\n");
-        bottomTextArea.append("Time of Meal: " + time + "\n");
-        bottomTextArea.append("Day of Meal: " + day + "\n");
-        bottomTextArea.append("\n");
+    private static void pubButtonAction(ActionEvent e, LinkedList<Publisher> publishers, String username, String cuisine, String mealName, String time, String day, String plan, String type, JTextArea bottomTextArea) {
+        Publisher pub = null;
+        for (Publisher i : publishers) {
+            if (username.equalsIgnoreCase(i.getName())) {
+                pub = i;
+                pub.newMeal(username, cuisine, mealName, time, day, plan, type);
+                return;
+            }
+        }
+        Gui.print("Unregistered Publisher");
     }
-    
+
     /*
      * Placeholder subscriber button action
      * Right now it converts the radio button selection to a string
@@ -144,14 +167,39 @@ public class Gui {
      * with formatting.
      */
     private static void subButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+        boolean newUser = true;
         String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
-        bottomTextArea.append("+++ Subscribe Event +++" + "\n");
-        bottomTextArea.append("Username: " + username + "\n");
-        bottomTextArea.append("Cuisine: " + cuisine + "\n");
-        bottomTextArea.append("Subscription type: " + subscription + "\n");
-        bottomTextArea.append("\n");
+        for(int i = 0 ; i < broker.getSubscribers().size(); i++){
+            //If user already exists
+            if (username.equals(broker.getSubscribers().get(i).getName())){
+                newUser = false;
+                System.out.println("User "+ username + " exists.");
+                //if requested subscription already matches a current subscription
+                if (broker.getSubscribers().get(i).getSubscriptions().contains(cuisine) || broker.getSubscribers().get(i).getSubscriptions().contains(subscription)){
+
+                    if(cuisine.equals("")) {
+                        broker.getSubscribers().get(i).subscribe(subscription);
+                        break;
+                    }else{
+                        broker.getSubscribers().get(i).subscribe(cuisine);
+                        break;
+                    }
+                }
+            }
+        }
+        if (newUser == true){
+            Subscriber newSub = new Subscriber(broker, username);
+            broker.addSubscriber(newSub);
+            Gui.print("New User");
+            if(cuisine.equals("")) {
+                newSub.subscribe(subscription);
+            }else{
+                newSub.subscribe(cuisine);
+            }
+        }
+
     }
-    
+
     /*
      * Placeholder unsubscribe button action
      * Right now it converts the radio button selection to a string
@@ -166,8 +214,8 @@ public class Gui {
         bottomTextArea.append("Subscription type: " + subscription + "\n");
         bottomTextArea.append("\n");
     }
-    
+
     static public void print(String text) {
-    	Gui.bottomTextArea.append(text + "\n");
+        Gui.bottomTextArea.append(text + "\n");
     }
 }
