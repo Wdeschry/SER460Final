@@ -37,7 +37,9 @@ public class Broker {
 
         meals.add(meal);
 
-        notifySubscribers(meal, notification);
+        if(!subscribers.isEmpty()) {
+            notifySubscribers(meal, notification);
+        }
     }
 
     // adds subscriber to the list of subscribers, subscription type is contained within subscriber object
