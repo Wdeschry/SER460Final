@@ -192,7 +192,8 @@ public class Gui {
                     System.out.println("User " + username + " exists.");
                     //if requested subscription already matches a current subscription
                    // if (!(broker.getSubscribers().get(i).getSubscriptions().contains(cuisine) || broker.getSubscribers().get(i).getSubscriptions().contains(subscription))) {
-
+                    
+                    /*
                         if (cuisine.equals("")) {
                             broker.getSubscribers().get(i).subscribe(subscription);
                             break;
@@ -200,6 +201,11 @@ public class Gui {
                             broker.getSubscribers().get(i).subscribe(cuisine);
                             break;
                         }
+                    */
+                    
+                    if (!cuisine.equals("")) broker.getSubscribers().get(i).subscribe(cuisine);
+                    if (!subscription.equals("Idea")) broker.getSubscribers().get(i).subscribe(subscription);
+                    break;
                    // }
                 }
             }
@@ -241,7 +247,8 @@ public class Gui {
                     System.out.println("User " + username + " exists.");
                     //if requested subscription already matches a current subscription
                     // if (broker.getSubscribers().get(i).getSubscriptions().contains(cuisine) || broker.getSubscribers().get(i).getSubscriptions().contains(subscription)){
-
+                    
+                    /*
                     if (cuisine.equals("")) {
                         broker.getSubscribers().get(i).unsubscribe(subscription);
                         break;
@@ -249,6 +256,11 @@ public class Gui {
                         broker.getSubscribers().get(i).unsubscribe(cuisine);
                         break;
                     }
+                    */
+                    
+                    if (!cuisine.equals("")) broker.getSubscribers().get(i).unsubscribe(cuisine);
+                    if (!subscription.equals("Idea")) broker.getSubscribers().get(i).unsubscribe(subscription);
+                    break;
                     //  }
                 }
             }
