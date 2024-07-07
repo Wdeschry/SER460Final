@@ -29,11 +29,16 @@ public class Subscriber {
             Gui.print("Error: Subscriber " + name + " is already subscribed to " + subscribeType);
         } else {
             subscriptions.add(subscribeType);
+            /*
             Gui.print("+++ Subscribe Event +++");
             Gui.print("Username: " + this.name);
             //Gui.print("Cuisine: " + cuisine + "\n");
             Gui.print("Subscription type: " + subscribeType);
             Gui.print("");
+            */
+            Gui.print("subscribe" + ", "
+            		+ this.name + ", "
+            		+ subscribeType);
         }
 
         broker.subscribe(this);
@@ -47,10 +52,15 @@ public class Subscriber {
 
         if(subscriptions.contains(subscribeType)) {
             subscriptions.remove(subscribeType);
+            /*
             Gui.print("+++ Unsubscribe Event +++");
             Gui.print("Username: " + this.name);
             Gui.print("Subscription type: " + subscribeType);
             Gui.print("");
+            */
+            Gui.print("unsubscribe" + ", "
+            		+ this.name + ", "
+            		+ subscribeType);
         } else {
             System.out.println("Error: Subscriber " + name + " was not yet subscribed to " + subscribeType);
             Gui.print("Error: Subscriber " + name + " was not yet subscribed to " + subscribeType);
@@ -67,7 +77,6 @@ public class Subscriber {
 
         System.out.println(notification);
         Gui.print(this.name + " has been notified about " + notification);
-        Gui.print("");
     }
 
     public String getName() {

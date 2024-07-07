@@ -220,7 +220,7 @@ public class Gui {
                 }
             }
         }else{
-            Gui.print("Please input a username.\n");
+            Gui.print("Please input a username.");
         }
     }
 
@@ -268,7 +268,7 @@ public class Gui {
                 Gui.print("Error: " + username + " is unregistered and cannot unsubscribe from anything.");
             }
         }else{
-            Gui.print("Please input a username.\n");
+            Gui.print("Please input a username.");
         }
     }
 

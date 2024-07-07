@@ -27,15 +27,13 @@ public class Publisher {
 
 		if(meal != null) {
 			publish(meal);
-			Gui.print("+++ Publish Event +++");
-			Gui.print("Username: " + meal.getPublisherName());
-			Gui.print("Cuisine: " + meal.getCuisineType());
-			Gui.print("Meal Name: " + meal.getMealName());
-			Gui.print("Cook Time: " + meal.getCookTime());
-			Gui.print("Day of Meal: " + meal.getDayOfWeek());
-			Gui.print("Type of plan: " + meal.getMealPlanType());
-			Gui.print("Type of meal: " + meal.getMealType());
-			Gui.print("\n");
+			Gui.print("publish" + ", "
+					+ meal.getPublisherName() + ", "
+					+ meal.getMealPlanType() + ", "
+					+ meal.getMealName() + ", "
+					+ meal.getCuisineType() + ", "
+					+ meal.getCookTime() + ", "
+					+ meal.getMealType());
 		}
 	}
 
