@@ -1,5 +1,6 @@
 package finalProject;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /*
@@ -23,7 +24,7 @@ public class Broker {
 
     // adds the published meal to the list and calls method to notify subscribers
     public void publish(Meal meal) {
-        String notification = "publish, " + meal.getPublisherName() + ", " + meal.getMealPlanType() + ", " + meal.getMealName() + ", " + meal.getCuisineType() + ", " + meal.getCookTime();
+        String notification = meal.getPublisherName() + ", " + meal.getMealPlanType() + ", " + meal.getMealName() + ", " + meal.getCuisineType() + ", " + meal.getCookTime();
 
         if(meal.getMealType() != null) {
             notification += ", " + meal.getMealType();
@@ -55,10 +56,12 @@ public class Broker {
 
     // iterates through each subscriber in the list and notifies them if they are subscribed to the same type
     public void notifySubscribers(Meal meal, String notification) {
-
+        String usedName ="";
+        ArrayList<String> alreadyNotified = new ArrayList<String>();
         for(Subscriber subscriber : subscribers) {
-            if(subscriber.getSubscriptions().contains(meal.getCuisineType()) || subscriber.getSubscriptions().contains(meal.getMealPlanType())) {
+            if((!alreadyNotified.contains(subscriber.getName())) && (subscriber.getSubscriptions().contains(meal.getCuisineType()) || subscriber.getSubscriptions().contains(meal.getMealPlanType()))) {
                 subscriber.addNotification(notification);
+                alreadyNotified.add(subscriber.getName());
             }
         }
     }

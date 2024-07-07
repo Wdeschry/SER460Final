@@ -66,6 +66,8 @@ public class Subscriber {
         notifications.add(notification);
 
         System.out.println(notification);
+        Gui.print(this.name + " has been notified about " + notification);
+        Gui.print("");
     }
 
     public String getName() {
