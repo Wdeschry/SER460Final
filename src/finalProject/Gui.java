@@ -31,7 +31,7 @@ public class Gui {
          * Main window
          ****************/
         // Window
-        JFrame frame = new JFrame("SER450 Final");
+        JFrame frame = new JFrame("SER460 Final");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 400);
 
