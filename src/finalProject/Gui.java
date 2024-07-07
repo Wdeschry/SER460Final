@@ -169,35 +169,38 @@ public class Gui {
     private static void subButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
         boolean newUser = true;
         String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
-        for(int i = 0 ; i < broker.getSubscribers().size(); i++){
-            //If user already exists
-            if (username.equals(broker.getSubscribers().get(i).getName())){
-                newUser = false;
-                System.out.println("User "+ username + " exists.");
-                //if requested subscription already matches a current subscription
-                if (broker.getSubscribers().get(i).getSubscriptions().contains(cuisine) || broker.getSubscribers().get(i).getSubscriptions().contains(subscription)){
+        if(!username.equals("")) {
+            for (int i = 0; i < broker.getSubscribers().size(); i++) {
+                //If user already exists
+                if (username.equals(broker.getSubscribers().get(i).getName())) {
+                    newUser = false;
+                    System.out.println("User " + username + " exists.");
+                    //if requested subscription already matches a current subscription
+                   // if (!(broker.getSubscribers().get(i).getSubscriptions().contains(cuisine) || broker.getSubscribers().get(i).getSubscriptions().contains(subscription))) {
 
-                    if(cuisine.equals("")) {
-                        broker.getSubscribers().get(i).subscribe(subscription);
-                        break;
-                    }else{
-                        broker.getSubscribers().get(i).subscribe(cuisine);
-                        break;
-                    }
+                        if (cuisine.equals("")) {
+                            broker.getSubscribers().get(i).subscribe(subscription);
+                            break;
+                        } else {
+                            broker.getSubscribers().get(i).subscribe(cuisine);
+                            break;
+                        }
+                   // }
                 }
             }
-        }
-        if (newUser == true){
-            Subscriber newSub = new Subscriber(broker, username);
-            broker.addSubscriber(newSub);
-            Gui.print("New User");
-            if(cuisine.equals("")) {
-                newSub.subscribe(subscription);
-            }else{
-                newSub.subscribe(cuisine);
+            if (newUser == true) {
+                Subscriber newSub = new Subscriber(broker, username);
+                broker.addSubscriber(newSub);
+                Gui.print("New User");
+                if (cuisine.equals("")) {
+                    newSub.subscribe(subscription);
+                } else {
+                    newSub.subscribe(cuisine);
+                }
             }
+        }else{
+            Gui.print("Please input a username.");
         }
-
     }
 
     /*
@@ -207,12 +210,33 @@ public class Gui {
      * with formatting.
      */
     private static void unsubButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+        boolean newUser = true;
         String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
-        bottomTextArea.append("+++ Unsubscribe Event +++" + "\n");
-        bottomTextArea.append("Username: " + username + "\n");
-        bottomTextArea.append("Cuisine: " + cuisine + "\n");
-        bottomTextArea.append("Subscription type: " + subscription + "\n");
-        bottomTextArea.append("\n");
+        if(!username.equals("")) {
+            for (int i = 0; i < broker.getSubscribers().size(); i++) {
+                //If user already exists
+                if (username.equals(broker.getSubscribers().get(i).getName())) {
+                    newUser = false;
+                    System.out.println("User " + username + " exists.");
+                    //if requested subscription already matches a current subscription
+                    // if (broker.getSubscribers().get(i).getSubscriptions().contains(cuisine) || broker.getSubscribers().get(i).getSubscriptions().contains(subscription)){
+
+                    if (cuisine.equals("")) {
+                        broker.getSubscribers().get(i).unsubscribe(subscription);
+                        break;
+                    } else {
+                        broker.getSubscribers().get(i).unsubscribe(cuisine);
+                        break;
+                    }
+                    //  }
+                }
+            }
+            if (newUser == true) {
+                Gui.print("User: " + username + " is unregistered and cannot unsubscribe from anything.");
+            }
+        }else{
+            Gui.print("Please input a username.");
+        }
     }
 
     static public void print(String text) {

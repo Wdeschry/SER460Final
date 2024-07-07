@@ -47,6 +47,10 @@ public class Subscriber {
 
         if(subscriptions.contains(subscribeType)) {
             subscriptions.remove(subscribeType);
+            Gui.print("+++ Unsubscribe Event +++");
+            Gui.print("Username: " + this.name);
+            Gui.print("Subscription type: " + subscribeType);
+
         } else {
             System.out.println("Error: Subscriber " + name + " was not yet subscribed to " + subscribeType);
         }
