@@ -166,7 +166,7 @@ public class Gui {
     			return;
     		}
     	}
-    	Gui.print("Unregistered Publisher");
+    	Gui.print("Unregistered Publisher (Only Publisher1, Publisher2, and Publisher3 are valid Publisher Usernames)");
     }
 
     /*
