@@ -101,12 +101,17 @@ public class Gui {
         JTextField subCuisineField = new JTextField("", 10);
         JRadioButton radioButton1 = new JRadioButton("Daily");
         JRadioButton radioButton2 = new JRadioButton("Weekly");
+        JRadioButton radioButton3 = new JRadioButton("Idea");
         ButtonGroup group = new ButtonGroup();
+        group.add(radioButton3);
+        group.add(radioButton1);
+        group.add(radioButton2);
         JButton subButton = new JButton("Subscribe");
         // Pass the parameters to the button when clicked
         subButton.addActionListener(e -> subButtonAction(e,
         		subUsernameField.getText(),
         		subCuisineField.getText(),
+                radioButton3,
         		radioButton1,
         		radioButton2,
         		bottomTextArea));
@@ -116,6 +121,7 @@ public class Gui {
         unsubButton.addActionListener(e -> unsubButtonAction(e,
         		subUsernameField.getText(),
         		subCuisineField.getText(),
+                radioButton3,
         		radioButton1,
         		radioButton2,
         		bottomTextArea));
@@ -123,13 +129,19 @@ public class Gui {
         // Add the elements in order to the panel
         topRight.add(new JLabel("Username:"));
         topRight.add(subUsernameField);
+
         topRight.add(new JLabel("Cuisine of interest:"));
         topRight.add(subCuisineField);
-        group.add(radioButton1);
-        group.add(radioButton2);
-        topRight.add(radioButton1);
-        topRight.add(radioButton2);
-        radioButton1.setSelected(true);
+
+        JPanel radioPanelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel radioPanelRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        radioPanelLeft.add(radioButton3);
+        radioPanelLeft.add(radioButton1);
+        topRight.add(radioPanelLeft);
+        radioPanelRight.add(radioButton2);
+        topRight.add(radioPanelRight);
+        radioButton3.setSelected(true);
+
         topRight.add(subButton);
         topRight.add(unsubButton);
 
@@ -166,8 +178,13 @@ public class Gui {
      * then sends all the strings to the bottonTextArea
      * with formatting.
      */
-    private static void subButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
-        String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
+    private static void subButtonAction(ActionEvent e, String username, String cuisine, JRadioButton ideaButton, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+        String subscription = "Idea";
+        if(dailyButton.isSelected()) {
+            subscription = "Daily";
+        } else if (weeklyButton.isSelected()) {
+            subscription = "Weekly";
+        }
         bottomTextArea.append("+++ Subscribe Event +++" + "\n");
         bottomTextArea.append("Username: " + username + "\n");
         bottomTextArea.append("Cuisine: " + cuisine + "\n");
@@ -181,8 +198,13 @@ public class Gui {
      * then sends all the strings to the bottonTextArea
      * with formatting.
      */
-    private static void unsubButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
-        String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
+    private static void unsubButtonAction(ActionEvent e, String username, String cuisine, JRadioButton ideaButton, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+        String subscription = "Idea";
+        if(dailyButton.isSelected()) {
+            subscription = "Daily";
+        } else if (weeklyButton.isSelected()) {
+            subscription = "Weekly";
+        }
         bottomTextArea.append("+++ Unsubscribe Event +++" + "\n");
         bottomTextArea.append("Username: " + username + "\n");
         bottomTextArea.append("Cuisine: " + cuisine + "\n");
