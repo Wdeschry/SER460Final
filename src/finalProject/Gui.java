@@ -18,8 +18,6 @@ public class Gui {
          * Placeholder for creating the pub/sub system when it is finished
          ****************************************************************/
 
-        Subscriber subscriber = new Subscriber(broker, "Default Subscriber");
-
         //Create a set of example publishers
         LinkedList<Publisher> publishers = new LinkedList<>();
         Publisher publisher1 = new Publisher(broker, "Publisher1");
@@ -28,8 +26,7 @@ public class Gui {
         publishers.add(publisher1);
         publishers.add(publisher2);
         publishers.add(publisher3);
-
-
+        
         /****************
          * Main window
          ****************/
@@ -101,35 +98,47 @@ public class Gui {
         JTextField subCuisineField = new JTextField("", 10);
         JRadioButton radioButton1 = new JRadioButton("Daily");
         JRadioButton radioButton2 = new JRadioButton("Weekly");
+        JRadioButton radioButton3 = new JRadioButton("Idea");
         ButtonGroup group = new ButtonGroup();
+        group.add(radioButton3);
+        group.add(radioButton1);
+        group.add(radioButton2);
         JButton subButton = new JButton("Subscribe");
         // Pass the parameters to the button when clicked
         subButton.addActionListener(e -> subButtonAction(e,
-                subUsernameField.getText(),
-                subCuisineField.getText(),
-                radioButton1,
-                radioButton2,
-                bottomTextArea));
-
+        		subUsernameField.getText(),
+        		subCuisineField.getText(),
+                radioButton3,
+        		radioButton1,
+        		radioButton2,
+        		bottomTextArea));
+        
         JButton unsubButton = new JButton("Unsubscribe");
         // Pass the parameters to the button when clicked
         unsubButton.addActionListener(e -> unsubButtonAction(e,
-                subUsernameField.getText(),
-                subCuisineField.getText(),
-                radioButton1,
-                radioButton2,
-                bottomTextArea));
-
+        		subUsernameField.getText(),
+        		subCuisineField.getText(),
+                radioButton3,
+        		radioButton1,
+        		radioButton2,
+        		bottomTextArea));
+        
         // Add the elements in order to the panel
         topRight.add(new JLabel("Username:"));
         topRight.add(subUsernameField);
+
         topRight.add(new JLabel("Cuisine of interest:"));
         topRight.add(subCuisineField);
-        group.add(radioButton1);
-        group.add(radioButton2);
-        topRight.add(radioButton1);
-        topRight.add(radioButton2);
-        radioButton1.setSelected(true);
+
+        JPanel radioPanelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel radioPanelRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        radioPanelLeft.add(radioButton3);
+        radioPanelLeft.add(radioButton1);
+        topRight.add(radioPanelLeft);
+        radioPanelRight.add(radioButton2);
+        topRight.add(radioPanelRight);
+        radioButton3.setSelected(true);
+
         topRight.add(subButton);
         topRight.add(unsubButton);
 
@@ -149,15 +158,15 @@ public class Gui {
      * with formatting.
      */
     private static void pubButtonAction(ActionEvent e, LinkedList<Publisher> publishers, String username, String cuisine, String mealName, String time, String day, String plan, String type, JTextArea bottomTextArea) {
-        Publisher pub = null;
-        for (Publisher i : publishers) {
-            if (username.equalsIgnoreCase(i.getName())) {
-                pub = i;
-                pub.newMeal(username, cuisine, mealName, time, day, plan, type);
-                return;
-            }
-        }
-        Gui.print("Unregistered Publisher");
+    	Publisher pub = null;
+    	for (Publisher i : publishers) {
+    		if (username.equalsIgnoreCase(i.getName())) {
+    			pub = i;
+    			pub.newMeal(username, cuisine, mealName, time, day, plan, type);
+    			return;
+    		}
+    	}
+    	Gui.print("Unregistered Publisher");
     }
 
     /*
@@ -166,9 +175,15 @@ public class Gui {
      * then sends all the strings to the bottonTextArea
      * with formatting.
      */
-    private static void subButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+
+    private static void subButtonAction(ActionEvent e, String username, String cuisine, JRadioButton ideaButton, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
         boolean newUser = true;
-        String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
+        String subscription = "Idea";
+        if(dailyButton.isSelected()) {
+            subscription = "Daily";
+        } else if (weeklyButton.isSelected()) {
+            subscription = "Weekly";
+        }
         if(!username.equals("")) {
             for (int i = 0; i < broker.getSubscribers().size(); i++) {
                 //If user already exists
@@ -209,9 +224,15 @@ public class Gui {
      * then sends all the strings to the bottonTextArea
      * with formatting.
      */
-    private static void unsubButtonAction(ActionEvent e, String username, String cuisine, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
+
+    private static void unsubButtonAction(ActionEvent e, String username, String cuisine, JRadioButton ideaButton, JRadioButton dailyButton, JRadioButton weeklyButton, JTextArea bottomTextArea) {
         boolean newUser = true;
-        String subscription = dailyButton.isSelected() ? "Daily" : "Weekly";
+        String subscription = "Idea";
+        if(dailyButton.isSelected()) {
+            subscription = "Daily";
+        } else if (weeklyButton.isSelected()) {
+            subscription = "Weekly";
+        }
         if(!username.equals("")) {
             for (int i = 0; i < broker.getSubscribers().size(); i++) {
                 //If user already exists
