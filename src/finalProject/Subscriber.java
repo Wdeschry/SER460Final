@@ -33,7 +33,7 @@ public class Subscriber {
             Gui.print("Username: " + this.name);
             //Gui.print("Cuisine: " + cuisine + "\n");
             Gui.print("Subscription type: " + subscribeType);
-            Gui.print("\n");
+            Gui.print("");
         }
 
         broker.subscribe(this);
@@ -43,16 +43,17 @@ public class Subscriber {
     public void unsubscribe(String subscribeType) {
         subscribeType = subscribeType.trim();
 
-        System.out.println("unsubscribe, " + name + subscribeType);
+        System.out.println("unsubscribe, " + name + " " + subscribeType);
 
         if(subscriptions.contains(subscribeType)) {
             subscriptions.remove(subscribeType);
             Gui.print("+++ Unsubscribe Event +++");
             Gui.print("Username: " + this.name);
             Gui.print("Subscription type: " + subscribeType);
-
+            Gui.print("");
         } else {
             System.out.println("Error: Subscriber " + name + " was not yet subscribed to " + subscribeType);
+            Gui.print("Error: Subscriber " + name + " was not yet subscribed to " + subscribeType);
         }
 
         if(subscriptions.isEmpty()) {
