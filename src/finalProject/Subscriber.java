@@ -21,7 +21,7 @@ public class Subscriber {
 
     // adds subscription type to subscriptions and lets the broker know it has subscribed to something
     public void subscribe(String subscribeType) {
-        subscribeType = subscribeType.trim();
+        subscribeType = subscribeType.trim().toLowerCase();
 
         System.out.println("subscribe, " + name + " " +  subscribeType);
 

@@ -187,7 +187,7 @@ public class Gui {
         if(!username.equals("")) {
             for (int i = 0; i < broker.getSubscribers().size(); i++) {
                 //If user already exists
-                if (username.equals(broker.getSubscribers().get(i).getName())) {
+                if (username.equalsIgnoreCase(broker.getSubscribers().get(i).getName())) {
                     newUser = false;
                     System.out.println("User " + username + " exists.");
                     //if requested subscription already matches a current subscription
@@ -203,7 +203,7 @@ public class Gui {
                         }
                     */
                     
-                    if (!cuisine.equals("")) broker.getSubscribers().get(i).subscribe(cuisine);
+                    if (!cuisine.equals("")) broker.getSubscribers().get(i).subscribe(cuisine.toLowerCase());
                     if (!subscription.equals("Idea")) broker.getSubscribers().get(i).subscribe(subscription);
                     break;
                    // }
@@ -242,7 +242,7 @@ public class Gui {
         if(!username.equals("")) {
             for (int i = 0; i < broker.getSubscribers().size(); i++) {
                 //If user already exists
-                if (username.equals(broker.getSubscribers().get(i).getName())) {
+                if (username.equalsIgnoreCase(broker.getSubscribers().get(i).getName())) {
                     newUser = false;
                     System.out.println("User " + username + " exists.");
                     //if requested subscription already matches a current subscription
@@ -258,7 +258,7 @@ public class Gui {
                     }
                     */
                     
-                    if (!cuisine.equals("")) broker.getSubscribers().get(i).unsubscribe(cuisine);
+                    if (!cuisine.equals("")) broker.getSubscribers().get(i).unsubscribe(cuisine.toLowerCase());
                     if (!subscription.equals("Idea")) broker.getSubscribers().get(i).unsubscribe(subscription);
                     break;
                     //  }

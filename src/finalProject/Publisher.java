@@ -13,6 +13,7 @@ public class Publisher {
 	}
 
 	public void newMeal(String username, String cuisine, String mealName, String time, String day, String plan, String type) {
+		cuisine = cuisine.toLowerCase();
 		Meal meal = null;
 		switch(plan) {
 			case "Idea":
